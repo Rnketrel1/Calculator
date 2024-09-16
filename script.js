@@ -1,8 +1,4 @@
-let userInputOne = null;
-let userOperator = null;
-let userInputTwo = null;
-let displayValue = "";
-
+//get buttons
 const clear = document.getElementById("clear");
 const plus00 = document.getElementById("plus100");
 const remainder = document.getElementById("remainder");
@@ -24,89 +20,94 @@ const decimal = document.getElementById("decimal");
 const calculate = document.getElementById("calculate");
 const display = document.getElementById("displayvalue");
 
-function updateDisplay() {
-  display.innerText = displayValue;
+//global variables
+let displayValue;
+
+//gets user input and displays it while keeping it stored in a variable
+function displayText(value) {
+  display.innerText += value;
+  displayValue = display.innerText;
 }
 
-function handleNumberClick(number) {
-  displayValue += number;
-  updateDisplay();
+//times 100 ( add 00 )
+function times100() {
+  let newValue = display.innerText * 100;
+  display.innerText = newValue;
 }
+//sends the user innput to the correct function (i know theres a better way to do this but idk how)
+buttonOne.onclick = function () {
+  displayText(1);
+};
+buttonTwo.onclick = function () {
+  displayText(2);
+};
+buttonThree.onclick = function () {
+  displayText(3);
+};
+buttonFour.onclick = function () {
+  displayText(4);
+};
+buttonFive.onclick = function () {
+  displayText(5);
+};
+buttonSix.onclick = function () {
+  displayText(6);
+};
+buttonSeven.onclick = function () {
+  displayText(7);
+};
+buttonEight.onclick = function () {
+  displayText(8);
+};
+buttonNine.onclick = function () {
+  displayText(9);
+};
+buttonZero.onclick = function () {
+  displayText(0);
+};
 
-buttonOne.addEventListener("click", () => handleNumberClick("1"));
-buttonTwo.addEventListener("click", () => handleNumberClick("2"));
-buttonThree.addEventListener("click", () => handleNumberClick("3"));
-buttonFour.addEventListener("click", () => handleNumberClick("4"));
-buttonFive.addEventListener("click", () => handleNumberClick("5"));
-buttonSix.addEventListener("click", () => handleNumberClick("6"));
-buttonSeven.addEventListener("click", () => handleNumberClick("7"));
-buttonEight.addEventListener("click", () => handleNumberClick("8"));
-buttonNine.addEventListener("click", () => handleNumberClick("9"));
-buttonZero.addEventListener("click", () => handleNumberClick("0"));
-
-decimal.addEventListener("click", () => {
-  if (!displayValue.includes(".")) {
-    handleNumberClick(".");
-  }
-});
-
-function setOperator(op) {
-  if (displayValue === "") return;
-  userInputOne = parseFloat(displayValue);
-  userOperator = op;
+//special inputs
+decimal.onclick = function () {
+  displayText(".");
+};
+divide.onclick = function () {
+  displayText("/");
+};
+times.onclick = function () {
+  displayText("*");
+};
+minus.onclick = function () {
+  displayText("-");
+};
+plus.onclick = function () {
+  displayText("+");
+};
+clear.onclick = function () {
   displayValue = "";
-  updateDisplay();
-}
+  display.innerText = "";
+};
+plus00.onclick = function () {
+  times100();
+};
+calculate.onclick = function () {
+  calculateFunction();
+};
+remainder.onclick = function () {
+  displayText("%");
+};
 
-plus.addEventListener("click", () => setOperator("+"));
-minus.addEventListener("click", () => setOperator("-"));
-times.addEventListener("click", () => setOperator("*"));
-divide.addEventListener("click", () => setOperator("/"));
-remainder.addEventListener("click", () => setOperator("%"));
-
-calculate.addEventListener("click", function () {
-  if (userInputOne === null || displayValue === "" || userOperator === null)
-    return;
-
-  userInputTwo = parseFloat(displayValue);
-  let result;
-
-  switch (userOperator) {
-    case "+":
-      result = userInputOne + userInputTwo;
-      break;
-    case "-":
-      result = userInputOne - userInputTwo;
-      break;
-    case "*":
-      result = userInputOne * userInputTwo;
-      break;
-    case "/":
-      result = userInputTwo !== 0 ? userInputOne / userInputTwo : "Error";
-      break;
-    case "%":
-      result = userInputOne % userInputTwo;
-      break;
-    default:
-      result = "Error";
+//the calculator
+function calculateFunction() {
+  if (
+    displayValue.includes("+") ||
+    displayValue.includes("-") ||
+    displayValue.includes("/") ||
+    displayValue.includes("*")
+  ) {
+    const result = new Function("return " + displayValue)();
+    display.innerText = result;
+  } else {
+    display.innerText = "ERROR";
+    displayValue = "";
   }
-
-  displayValue = result.toString();
-  updateDisplay();
-  userInputOne = null;
-  userOperator = null;
-  userInputTwo = null;
-});
-
-clear.addEventListener("click", function () {
-  displayValue = "";
-  userInputOne = null;
-  userOperator = null;
-  userInputTwo = null;
-  updateDisplay();
-});
-
-plus00.addEventListener("click", function () {
-  displayValue += "00";
-  updateDisplay();
-});
+}
